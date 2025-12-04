@@ -1,18 +1,12 @@
-import React from 'react'
+import React from "react";
 
-
-export default function Card({ card }) {
-    const questionMark = "?"
-    const [cardOn, setCardOn] = React.useState(false)
-    function swapCard() {
-        setCardOn(prev => !prev)
-    }
-
-    return <div className="card" onClick={swapCard}>
-        <div className="card-back">
-            {cardOn ? card : questionMark}
-        </div>
+export default function Card({ card, onClick }) {
+  return (
+    <div className="card" onClick={() => onClick(card)}>
+      <div className="card-front">?</div>
+      <div className="card-back">
+        {card.isFlipped ? card.value : "?"}
+      </div>
     </div>
+  );
 }
-
-
