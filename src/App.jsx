@@ -26,6 +26,7 @@ const cardValues = [
 function App() {
 
  const [cards, setCards] = React.useState([])
+ const [flippedCards, setFlippedCards] = React.useState([])
 
 
     const initializeGame= ()=> {
@@ -55,10 +56,32 @@ const handleCardClick = (card) => {
       return c
     }
   })
+
   setCards(newCards)
+
+const newFlippedCards = [...flippedCards, card.id]
+setFlippedCards(newFlippedCards)
+
+
+if (flippedCards.length===1) {
+  const firstCard = cards[flippedCards[0]]
+
+  if(firstCard.value === card.value) {
+    alert("matched")
+  }
+
+ 
+
+}
+ else if(flippedCards.length===2) {
+    setFlippedCards([])
+  }
 }
 
-  
+
+
+
+
 
   return (
     <div className="app">
