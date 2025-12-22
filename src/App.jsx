@@ -1,100 +1,104 @@
+import React, { useState, useEffect } from 'react'
 import { GameHeader } from "./components/GameHeader"
 import Card from "./components/Card"
-import React from 'react'
 
 const cardValues = [
-  "🍎",
-  "🍌",
-  "🍇",
-  "🍊",
-  "🍓",
-  "🥝",
-  "🍑",
-  "🍒",
-  "🍎",
-  "🍌",
-  "🍇",
-  "🍊",
-  "🍓",
-  "🥝",
-  "🍑",
-  "🍒",
+  "🍎", "🍌", "🍇", "🍊", "🍓", "🥝", "🍑", "🍒",
+  "🍎", "🍌", "🍇", "🍊", "🍓", "🥝", "🍑", "🍒",
 ]
 
-
-
 function App() {
-
- const [cards, setCards] = React.useState([])
- const [flippedCards, setFlippedCards] = React.useState([])
-
-
-    const initializeGame= ()=> {
-       //Shuffle the cards
-      const finalCards = cardValues.map((value,index) => ({
-id: index,
-value,
-isFlipped:false,
-isMatched:false
-  }))
-   
+  const [cards, setCards] = useState([])
+  const [flippedCards, setFlippedCards] = useState([]) // Stores only IDs of currently flipped cards
+  
+  // Initialize and Shuffle the Game
+  const initializeGame = () => {
+    const finalCards = cardValues
+      .sort(() => Math.random() - 0.5) // Simple shuffle
+      .map((value, index) => ({
+        id: index,
+        value,
+        isFlipped: false,
+        isMatched: false
+      }))
+    
     setCards(finalCards)
-  }
-
-  React.useEffect(()=> {
-     initializeGame()
-  },[])
-
-const handleCardClick = (card) => {
-  if (card.isFlipped || card.isMatched) return
-
-  // Update card flipped state
-  const newCards = cards.map(c => {
-    if (c.id === card.id) {
-      return { ...c, isFlipped: true }
-    } else {
-      return c
-    }
-  })
-
-  setCards(newCards)
-
-const newFlippedCards = [...flippedCards, card.id]
-setFlippedCards(newFlippedCards)
-
-
-if (flippedCards.length===1) {
-  const firstCard = cards[flippedCards[0]]
-
-  if(firstCard.value === card.value) {
-    alert("matched")
-  }
-
- 
-
-}
- else if(flippedCards.length===2) {
     setFlippedCards([])
   }
-}
 
+  // Start game on first load
+  useEffect(() => {
+    initializeGame()
+  }, [])
 
+  const handleCardClick = (clickedCard) => {
+    // 1. GUARD CLAUSE: Stop if card is already flipped, matched, or if 2 cards are already open
+    if (clickedCard.isFlipped || clickedCard.isMatched || flippedCards.length === 2) return
 
+    // 2. Visually flip the clicked card
+    const newCards = cards.map(c => 
+      c.id === clickedCard.id ? { ...c, isFlipped: true } : c
+    )
+    setCards(newCards)
 
+    // 3. Add to the tracker
+    const newFlipped = [...flippedCards, clickedCard.id]
+    setFlippedCards(newFlipped)
 
+    // 4. Check for Match (Only if we now have 2 cards flipped)
+    if (newFlipped.length === 2) {
+      const firstCardId = newFlipped[0]
+      const secondCardId = clickedCard.id
+      
+      const firstCard = cards.find(c => c.id === firstCardId)
+      const secondCard = clickedCard
+
+      if (firstCard.value === secondCard.value) {
+        // --- MATCH FOUND ---
+        // Mark both cards as matched and keep them flipped
+        setCards(prev => prev.map(c => {
+          if (c.id === firstCardId || c.id === secondCardId) {
+            return { ...c, isMatched: true, isFlipped: true }
+          }
+          return c
+        }))
+        // Reset the tracker immediately so user can click next pair
+        setFlippedCards([]) 
+        
+      } else {
+        // --- NO MATCH ---
+        // Wait 1 second so user can see the cards, then flip them back
+        setTimeout(() => {
+          setCards(prev => prev.map(c => {
+            if (c.id === firstCardId || c.id === secondCardId) {
+              return { ...c, isFlipped: false } // Flip back over
+            }
+            return c
+          }))
+          setFlippedCards([]) // Reset the tracker
+        }, 1000)
+      }
+    }
+  }
 
   return (
     <div className="app">
-      <GameHeader score={3} moves={2} />
+      {/* Assuming GameHeader takes these props */}
+      <GameHeader score={0} moves={0} />
 
       <div className="cards-grid">
-{cards.map(card => (
-  <Card key={card.id} card={card} onClick={handleCardClick} />
-))}
-
+        {cards.map(card => (
+          <Card 
+            key={card.id} 
+            card={card} 
+            onClick={handleCardClick} 
+          />
+        ))}
       </div>
     </div>
   )
 }
 
-export default App 
+export default App
+
+
