@@ -8,5 +8,5 @@ HTML, CSS, JavaScript & React used
 
 <h2> Gif </h2>
 
+![Memory game GIF](https://github.com/user-attachments/assets/efc230b9-f23e-4f4c-905e-f08cfc2e657b)
 
-[![Uploading Zight Recording 2025-12-23 at 12.06.47 pm.gif…]()](https://share.zight.com/geuXmeYn)
