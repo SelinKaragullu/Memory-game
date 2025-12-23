@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import { GameHeader } from "./components/GameHeader"
 import Card from "./components/Card"
+import {WinMessage} from "./components/WinMessage"
 
 const cardValues = [
   "🍎", "🍌", "🍇", "🍊", "🍓", "🥝", "🍑", "🍒",
   "🍎", "🍌", "🍇", "🍊", "🍓", "🥝", "🍑", "🍒",
 ]
 
+
+
 function App() {
   const [cards, setCards] = useState([])
-  const [flippedCards, setFlippedCards] = useState([]) // Stores only IDs of currently flipped cards
-  
-  // Initialize and Shuffle the Game
+  const [flippedCards, setFlippedCards] = useState([])
+  const [moves,setMoves] = useState(0)
+
+const score = (cards.filter((card)=>card.isMatched===true)).length/2
+
+
   const initializeGame = () => {
     const finalCards = cardValues
-      .sort(() => Math.random() - 0.5) // Simple shuffle
+      .sort(() => Math.random() - 0.5)
       .map((value, index) => ({
         id: index,
         value,
@@ -22,31 +28,33 @@ function App() {
         isMatched: false
       }))
     
+
+
     setCards(finalCards)
+    setMoves(0)
+    
+
+    
     setFlippedCards([])
   }
 
-  // Start game on first load
   useEffect(() => {
     initializeGame()
   }, [])
 
   const handleCardClick = (clickedCard) => {
-    // 1. GUARD CLAUSE: Stop if card is already flipped, matched, or if 2 cards are already open
     if (clickedCard.isFlipped || clickedCard.isMatched || flippedCards.length === 2) return
 
-    // 2. Visually flip the clicked card
     const newCards = cards.map(c => 
       c.id === clickedCard.id ? { ...c, isFlipped: true } : c
     )
     setCards(newCards)
 
-    // 3. Add to the tracker
     const newFlipped = [...flippedCards, clickedCard.id]
     setFlippedCards(newFlipped)
 
-    // 4. Check for Match (Only if we now have 2 cards flipped)
     if (newFlipped.length === 2) {
+      setMoves(prev=>prev+1)
       const firstCardId = newFlipped[0]
       const secondCardId = clickedCard.id
       
@@ -54,37 +62,36 @@ function App() {
       const secondCard = clickedCard
 
       if (firstCard.value === secondCard.value) {
-        // --- MATCH FOUND ---
-        // Mark both cards as matched and keep them flipped
         setCards(prev => prev.map(c => {
           if (c.id === firstCardId || c.id === secondCardId) {
             return { ...c, isMatched: true, isFlipped: true }
           }
           return c
         }))
-        // Reset the tracker immediately so user can click next pair
         setFlippedCards([]) 
         
       } else {
-        // --- NO MATCH ---
-        // Wait 1 second so user can see the cards, then flip them back
         setTimeout(() => {
           setCards(prev => prev.map(c => {
             if (c.id === firstCardId || c.id === secondCardId) {
-              return { ...c, isFlipped: false } // Flip back over
+              return { ...c, isFlipped: false }
             }
             return c
           }))
-          setFlippedCards([]) // Reset the tracker
+          setFlippedCards([]) 
         }, 1000)
       }
     }
   }
 
+
+ const isGameComplete = cards.length > 0 
+ && cards.every(card => card.isMatched === true)
+
   return (
     <div className="app">
-      {/* Assuming GameHeader takes these props */}
-      <GameHeader score={0} moves={0} />
+      <GameHeader score={score} moves={moves} onReset={initializeGame}/>
+      { isGameComplete && <WinMessage moves={moves}/>}
 
       <div className="cards-grid">
         {cards.map(card => (
@@ -100,5 +107,3 @@ function App() {
 }
 
 export default App
-
-
