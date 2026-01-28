@@ -6,7 +6,6 @@ A classic card matching game built with React. The objective is to find all pair
 
 <h2> Gif </h2>![Memory game GIF](https://github.com/user-attachments/assets/efc230b9-f23e-4f4c-905e-f08cfc2e657b)
 
-![Game Screenshot](./screenshot.gif)
 ## 🎮 How to Play
 
 1.  Click on a card to flip it over.
