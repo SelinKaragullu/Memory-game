@@ -28,14 +28,6 @@ A classic card matching game built with React. The objective is to find all pair
 * **CSS3** (Grid Layout & Animations)
 * **HTML5**
 
-## 🧠 What I Learned
-
-This project was a deep dive into handling game logic and side effects in React:
-* **`useEffect` Dependencies:** Used `useEffect` to compare two selected cards (`choiceOne` and `choiceTwo`) whenever a selection changes.
-* **Handling Timeouts:** Implemented `setTimeout` to create a delay before flipping non-matching cards back, allowing the user to see them briefly.
-* **State Management:** Managed complex state for the deck of cards, turn count, and the "disabled" state to prevent clicking while animations are running.
-* **Array Manipulation:** Used `Math.random()` to shuffle the cards array efficiently.
-
 ## 💻 Installation
 
 To run this project locally:
