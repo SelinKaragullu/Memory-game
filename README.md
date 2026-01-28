@@ -1,33 +1,46 @@
 # 🧠 React Memory Game
 
-A classic card matching game built with React. The objective is to find all pairs of matching cards in the fewest number of turns.
+A classic card matching game built with React. The objective is to find all pairs of matching cards with the highest score and fewest moves.
 
 [🃏 **Live Demo**](https://memory-game-mgame.netlify.app/)
 
-<h2> Gif </h2>![Memory game GIF](https://github.com/user-attachments/assets/efc230b9-f23e-4f4c-905e-f08cfc2e657b)
+GIF
+![Memory game GIF](https://github.com/user-attachments/assets/d4ee05fc-1abf-4538-9644-cee86dfc0568)
 
 ## 🎮 How to Play
 
-1.  Click on a card to flip it over.
-2.  Select a second card to try and find a match.
-3.  **Match:** If the images match, the cards stay flipped.
-4.  **No Match:** If they don't match, they flip back after a short delay.
-5.  The game ends when all pairs are found. Try to beat your best score (lowest turns)!
+1.  **Start:** The game begins with a grid of face-down cards.
+2.  **Flip:** Click on a card to reveal its value.
+3.  **Match:** Select a second card.
+    * If they match, you gain points and the cards stay open.
+    * If they don't match, they flip back over.
+4.  **Win:** The game ends when all pairs are found. A congratulatory message will appear with your total moves!
 
 ## ✨ Features
 
-* **Card Shuffling:** Randomizes card positions at the start of every new game.
-* **Turn Counter:** Tracks the number of moves the user has made.
-* **Matching Logic:** Automatically detects matches and keeps pairs visible.
-* **Auto-Reset:** Automatically flips cards back if no match is found after a delay.
-* **Interactive UI:** Smooth card flip animations using CSS.
+* **Score & Move Tracking:** Real-time dashboard showing current score and total moves made.
+* **Win Message:** A dynamic modal component that appears upon game completion displaying the final move count.
+* **Reset Functionality:** A "New Game" button to instantly reset the board and scores.
+* **Component-Based UI:** Modular architecture separating the header, card grid, and game logic.
+* **Interactive Card Flip:** Smooth CSS transitions triggered by React state changes.
 
 ## 🛠 Built With
 
-* **React** (Hooks: `useState`, `useEffect`)
-* **JavaScript** (ES6+)
-* **CSS3** (Grid Layout & Animations)
-* **HTML5**
+* **React** (Functional Components)
+    * `useState`: To manage game state (cards, flips, score, moves).
+    * `useEffect`: To handle matching logic and timeouts.
+* **JSX**: Modular components (`Card`, `GameHeader`, `WinMessage`).
+* **CSS3**: For card styling and 3D flip animations (via dynamic classes).
+* **JavaScript (ES6+)**: Logic for shuffling and comparing values.
+
+## 🧠 Challenges & Learnings
+
+Building this project reinforced several key React concepts:
+
+* **Component Decomposition:** I learned how to break down the UI into reusable functional components like `Card.jsx` for individual items and `GameHeader.jsx` for the dashboard.
+* **Props & Event Handling:** practiced passing data (like `score` and `moves`) down to child components and passing functions (like `onReset` or `onClick`) back up to the parent.
+* **Conditional Rendering:** Used ternary operators to dynamically assign CSS classes (e.g., `` `card ${card.isFlipped ? "flipped" : ""}` ``) to control the visual state of the cards.
+* **Game State Logic:** Managed complex state updates to track which cards are currently selected, matched, or need to be reset.
 
 ## 💻 Installation
 
