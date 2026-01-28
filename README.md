@@ -5,6 +5,8 @@ A classic card matching game built with React. The objective is to find all pair
 [🃏 **Live Demo**](https://memory-game-mgame.netlify.app/)
 
 GIF
+
+
 ![Memory game GIF](https://github.com/user-attachments/assets/d4ee05fc-1abf-4538-9644-cee86dfc0568)
 
 ## 🎮 How to Play
